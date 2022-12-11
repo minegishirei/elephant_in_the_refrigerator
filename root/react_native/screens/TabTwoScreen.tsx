@@ -1,15 +1,39 @@
 import { StyleSheet } from 'react-native';
+import { RootTabScreenProps } from '../types';
+import * as React from "react";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { DayRow } from "../components/DayRow"
 
-export default function TabTwoScreen() {
+export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
+  const cooking_timeline = [
+    {
+      date: "12/11",
+      week: "日",
+      cooking_list: ["焼きそば"]
+    },
+    {
+      date: "12/12",
+      week: "月",
+      cooking_list: ["鶏肉と小松菜の炒め", "ジブリ", "パン"]
+    },
+    {
+      date: "12/13",
+      week: "火",
+      cooking_list: ["ピーマンつくね"]
+    },
+  ]
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
+    <>
+      {
+        cooking_timeline.map(function (row) {
+          return (<DayRow
+            date={row.date}
+            week={row.week}
+            cooking_list={row.cooking_list}
+          ></DayRow>)
+        })
+      }
+    </>
   );
 }
 

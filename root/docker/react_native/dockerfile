@@ -6,3 +6,11 @@ WORKDIR /usr/src/app/
 RUN apk update && apk add bash
 
 RUN yarn global add expo-cli
+
+# add git command
+RUN apk update && \
+    npm install && \
+    npm install -g npm && \
+    npm install -g vue-cli && \
+    npm install -g http-server && \
+    apk add git

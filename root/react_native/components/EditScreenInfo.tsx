@@ -1,5 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import {Image} from 'react-native' ; 
 
 import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
@@ -29,6 +30,13 @@ export default function EditScreenInfo({ path }: { path: string }) {
           darkColor="rgba(255,255,255,0.8)">
           Change any of the text, save the file, and your app will automatically update.
         </Text>
+        
+        <Image
+          style={{width: 100, height: 50}}
+          resizeMode='contain'
+          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png'}}
+        />
+      
       </View>
 
       <View style={styles.helpContainer}>
