@@ -23,3 +23,5 @@ EXPOSE 19006
 RUN yarn global add @expo/ngrok@^4.1.0
 
 RUN npm install expo
+
+RUN yarn install
