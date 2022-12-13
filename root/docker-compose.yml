@@ -2,12 +2,23 @@ version: "3"
 services:
   react_native:
     build: ./docker/react_native
+    container_name: eitr_frontend
     volumes:
       - ./react_native/:/usr/src/app
     env_file: .env
-    command: yarn start
     ports:
       - "19000:19000"
       - "19001:19001"
       - "19002:19002"
       - "19006:19006"
+  backend:
+    build: ./backend
+    ports:
+      - "80:80"
+    environment:
+      FLASK_APP: "app.py"
+      FLASK_ENV: "development"
+    container_name: eitr_backend
+    volumes:
+      - ./backend/app:/app
+    command: "flask run --host=0.0.0.0 -p 80 --no-debugger"

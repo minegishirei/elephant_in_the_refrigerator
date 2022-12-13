@@ -7,7 +7,7 @@ import * as React from "react";
 import { RNECard } from '../components/RNECard'
 import { useState } from 'react';
 import { AddFoodScreen } from '../components/AddFoodScreen';
-
+import { RNEButton } from '../components/rne';
 
 function FoodListRender() {
   const food_list_init = {
@@ -76,8 +76,10 @@ function FoodListRender() {
     ]
   }
 
+
+
   const [food_list, SetFood_list] = useState(food_list_init)
-  function incremen_food_list({food_kind, food_title}: {food_kind:string, food_title: string}) {
+  function incremen_food_list(food_kind, food_title) {
     let new_food_list = { ...food_list }
     new_food_list[food_kind] = food_list[food_kind].map(function (row) {
       if (row.title === food_title) {
@@ -126,7 +128,9 @@ function FoodListRender() {
       ></RNECard>)
     })
   }
+  
 
+  
   function AllFoodRender() {
     return Object.keys({ ...food_list }).map(function (key) {
       return (
@@ -154,6 +158,17 @@ function FoodListRender() {
         <Text style={styles.title}></Text>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
+        <RNEButton update_function={function(){
+          return fetch('https://facebook.github.io/react-native/movies.json')
+          .then((response) => response.json())
+          .then((responseJson) => console.log(responseJson))
+        }} />
+        <RNEButton update_function={function(){
+            fetch('http://192.168.0.19/')
+            .then((response) => response.json())
+            //.then((response) => alert(response["food_kind"]))
+            .then((responseJson) => add_new_food(responseJson["food_kind"], responseJson["title"]))
+        }} />
       </ScrollView>
       <AddFoodScreen add_function={add_new_food} />
     </>
