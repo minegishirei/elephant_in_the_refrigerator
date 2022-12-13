@@ -14,10 +14,3 @@ RUN apk update && \
     npm install -g vue-cli && \
     npm install -g http-server && \
     apk add git
-
-EXPOSE 19000
-EXPOSE 19001
-EXPOSE 19002
-EXPOSE 19006
-
-RUN yarn global add @expo/ngrok@^4.1.0

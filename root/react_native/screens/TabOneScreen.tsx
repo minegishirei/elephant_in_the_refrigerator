@@ -1,5 +1,4 @@
 import { StyleSheet, ScrollView } from 'react-native';
-import { TouchableOpacity } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -7,13 +6,12 @@ import { RootTabScreenProps } from '../types';
 import * as React from "react";
 import { RNECard } from '../components/RNECard'
 import { useState } from 'react';
-
-import { Icon } from "@rneui/themed";
+import { AddFoodScreen } from '../components/AddFoodScreen';
 
 
 function FoodListRender() {
   const food_list_init = {
-    vegetable: [
+    "やさい": [
       {
         category: 3,
         title: "じゃがいも",
@@ -35,7 +33,7 @@ function FoodListRender() {
         img: "https://4.bp.blogspot.com/-ouxvqS-MNoI/UkJM7ra15rI/AAAAAAAAYVw/2zZKFSO09Hw/s800/negi_green_onion.png"
       }
     ],
-    meat: [
+    "にく": [
       {
         category: 1,
         title: "ぶた",
@@ -52,7 +50,7 @@ function FoodListRender() {
         img: "https://2.bp.blogspot.com/-I1bXhmXwLKk/VJF_QyNPkhI/AAAAAAAAp00/uoMPct9C4j8/s800/animalface_ushi.png"
       }
     ],
-    fish: [
+    "さかな": [
       {
         category: 1,
         title: "しゃけ",
@@ -69,7 +67,7 @@ function FoodListRender() {
         img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0gKRUcBjTN2lQmDekPzK2NfM9Ay4tt_LMVmbuta4B&s"
       }
     ],
-    else: [
+    "その他": [
       {
         category: 1,
         title: "なっとう",
@@ -106,6 +104,15 @@ function FoodListRender() {
     }).filter(e => e)
     SetFood_list(new_food_list)
   }
+  function add_new_food(food_kind, food_title) {
+    let new_food_list = { ...food_list }
+    new_food_list[food_kind].push({
+      category: 1,
+      title: food_title,
+      img: "https://1.bp.blogspot.com/-3QYPEGCAI5o/VUIJwT_DOGI/AAAAAAAAtZA/Pe8ZfrGtBYs/s800/food_nattou_wara.png"
+    })
+    SetFood_list(new_food_list)
+  }
 
   function FoodKindRender(card_list, food_kind, update_function, downgrade_function) {
     return card_list[food_kind].map(function (row) {
@@ -120,47 +127,35 @@ function FoodListRender() {
     })
   }
 
+  function AllFoodRender() {
+    return Object.keys({ ...food_list }).map(function (key) {
+      return (
+        <>
+          <Text style={styles.title}>・{key}</Text>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{
+            flex: 1,
+            flexDirection: 'row'
+          }}>
+            {FoodKindRender(food_list, key, incremen_food_list, decremen_food_list)}
+            <Text style={styles.title}></Text>
+          </ScrollView>
+          <Text style={styles.title}></Text>
+        </>
+      )
+    })
+  }
+
   return (
     <>
-      <Text style={styles.title}></Text>
-      <Text style={styles.title}>・やさーい</Text>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{
-        flex: 1,
-        flexDirection: 'row'
-      }}>
-        {FoodKindRender(food_list, "vegetable", incremen_food_list, decremen_food_list)}
+      <ScrollView alignItems="center">
         <Text style={styles.title}></Text>
-      </ScrollView>
+        {AllFoodRender()}
+        <EditScreenInfo path="/screens/ModalScreen.tsx" />
+        <Text style={styles.title}></Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-      <Text style={styles.title}></Text>
-      <Text style={styles.title} >・にくー</Text>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{
-        flex: 1,
-        flexDirection: 'row',
-      }}>
-        {FoodKindRender(food_list, "meat", incremen_food_list, decremen_food_list)}
-        <Text style={styles.title}></Text>
       </ScrollView>
-
-      <Text style={styles.title}></Text>
-      <Text style={styles.title} >・さかなー</Text>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{
-        flex: 1,
-        flexDirection: 'row',
-      }}>
-        {FoodKindRender(food_list, "fish", incremen_food_list, decremen_food_list)}
-        <Text style={styles.title}></Text>
-      </ScrollView>
-
-      <Text style={styles.title}></Text>
-      <Text style={styles.title}>・その他</Text>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{
-        flex: 1,
-        flexDirection: 'row'
-      }}>
-        {FoodKindRender(food_list, "else", incremen_food_list, decremen_food_list)}
-        <Text style={styles.title}></Text>
-      </ScrollView>
+      <AddFoodScreen add_function={add_new_food} />
     </>
   )
 }
@@ -169,43 +164,12 @@ function FoodListRender() {
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <>
-      <ScrollView alignItems="center">
-        {FoodListRender()}
-        <Text style={styles.title}></Text>
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-      </ScrollView>
-      <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          borderColor: 'rgba(0,0,0,0.2)',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 70,
-          position: 'absolute',
-          bottom: 10,
-          right: 10,
-          height: 70,
-          backgroundColor: '#fff',
-          borderRadius: 100,
-        }}
-      >
-        <Icon
-          color="#6E2A40"
-          containerStyle={{}}
-          disabledStyle={{}}
-          iconProps={{}}
-          iconStyle={{}}
-          name="add"
-          onLongPress={() => console.log("onLongPress()")}
-          onPress={() => console.log("onPress()")}
-          size={40}
-          type="material"
-        />
-      </TouchableOpacity>
+      {FoodListRender()}
     </>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

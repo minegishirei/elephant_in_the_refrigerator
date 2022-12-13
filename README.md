@@ -7,3 +7,6 @@
 `docker-compose run --rm react_native bash --login`
 
 
+`npx expo start --tunnel`
+
+
