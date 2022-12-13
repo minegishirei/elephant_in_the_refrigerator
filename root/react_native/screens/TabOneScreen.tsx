@@ -77,7 +77,7 @@ function FoodListRender() {
   }
 
   const [food_list, SetFood_list] = useState(food_list_init)
-  function incremen_food_list(food_kind, food_title) {
+  function incremen_food_list({food_kind, food_title}: {food_kind:string, food_title: string}) {
     let new_food_list = { ...food_list }
     new_food_list[food_kind] = food_list[food_kind].map(function (row) {
       if (row.title === food_title) {
