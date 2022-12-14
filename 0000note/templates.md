@@ -20,3 +20,20 @@ https://reactnativeelements.com/
 
 https://flatlogic.com/templates/react-native-starter-free
 
+
+
+## フロントエンド
+
+
+## サーバーサイド 
+
+Flaskにて実装
+
+
+
+
+## 名前一覧
+
+- eitr - elephant_in_the_refrigeratorの略。
+
+

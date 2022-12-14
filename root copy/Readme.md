@@ -1,4 +1,0 @@
-
-
-npx expo start --tunnel
-
