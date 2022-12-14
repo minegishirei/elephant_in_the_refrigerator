@@ -18,7 +18,9 @@ services:
     environment:
       FLASK_APP: "app.py"
       FLASK_ENV: "production"
-      FLASK_DEBUG: False
+      FLASK_DEBUG: "False"
+    env_file:
+      - production.env
     container_name: eitr_backend
     volumes:
       - ./backend/app:/app

@@ -97,7 +97,7 @@ class RefrigeratorDAO():
               {
                   "category": int(food_count),
                   "title": title,
-                  "img": search_image(f"食べ物 {food_kind}")[0]["previewURL"]
+                  "img": search_image(f"{title}")[0]["previewURL"]
               }
             ]
         self.jsonIO.write(food_list)
