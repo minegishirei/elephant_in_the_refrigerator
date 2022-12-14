@@ -18,7 +18,8 @@ services:
     environment:
       FLASK_APP: "app.py"
       FLASK_ENV: "development"
+      FLASK_DEBUG: "True"
     container_name: eitr_backend
     volumes:
       - ./backend/app:/app
-    command: "flask run --host=0.0.0.0 -p 80 --no-debugger"
+    command: "flask run --host=0.0.0.0 -p 80"

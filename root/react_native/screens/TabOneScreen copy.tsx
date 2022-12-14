@@ -12,74 +12,58 @@ import { RNEButton } from '../components/rne';
 function FoodListRender() {
   const food_list_init = {}
   const [food_list, SetFood_list] = useState(food_list_init)
-
-  function fetch_food_list() {
-    return fetch('http://192.168.0.19/refrigerator/get')
-      .then((response) => response.json())
-      .then(function (responseJson) {
-        SetFood_list(responseJson)
-      })
+  function fetch_food_list(){
+    fetch('http://192.168.0.19/refrigerator/get')
+    .then((response) => response.json())
+    .then(function(responseJson){
+      SetFood_list(responseJson)
+    })
   }
-
-  function push_food_change(food_kind, food_title, amount) {
-    return fetch(`http://192.168.0.19/refrigerator/set?title=${food_title}&food_kind=${food_kind}&food_count=${amount}`)
-      .then((response) => response.json())
-      .then(function (responseJson) { })
-  }
+  //fetch_food_list()
 
 
   function incremen_food_list(food_kind, food_title) {
-    let new_food_list = { ...food_list }
-    new_food_list[food_kind] = food_list[food_kind].map(function (row) {
+    food_list[food_kind].map(function (row) {
       if (row.title === food_title) {
-        row.category = row.category + 1
-        push_food_change(food_kind, food_title, row.category)
-        return row
-      } else {
-        return row
-      }
-    })
-    SetFood_list(new_food_list)
-  }
-  function decremen_food_list(food_kind, food_title) {
-    let new_food_list = { ...food_list }
-    new_food_list[food_kind] = food_list[food_kind].map(function (row) {
-      if (row.title === food_title) {
-        row.category = row.category - 1
-        if (row.category <= 0) {
-          return
-        }
-        push_food_change(food_kind, food_title, row.category)
-        return row
-      } else {
-        return row
+        fetch(`http://192.168.0.19/refrigerator/set?title=${food_title}&food_kind=${food_kind}&food_count=${row.category+1}`)
+          .then((response) => response.json())
+          .then(function(responseJson){})
+          .then(fetch_food_list)
       }
     }).filter(e => e)
-    SetFood_list(new_food_list)
+  }
+  function decremen_food_list(food_kind, food_title) {
+    food_list[food_kind].map(function (row) {
+      if (row.title === food_title) {
+        fetch(`http://192.168.0.19/refrigerator/set?title=${food_title}&food_kind=${food_kind}&food_count=${row.category-1}`)
+          .then((response) => response.json())
+          .then(function(responseJson){})
+          .then(fetch_food_list)
+      }
+    }).filter(e => e)
   }
   function add_new_food(food_kind, food_title) {
-    let new_food_list = { ...food_list }
-    push_food_change(food_kind, food_title, 1)
+    fetch(`http://192.168.0.19/refrigerator/set?title=${food_title}&food_kind=${food_kind}&food_count=${1}`)
+      .then((response) => response.json())
+      .then(function(responseJson){})
       .then(fetch_food_list)
-    //SetFood_list(new_food_list)
-  }
-
-  function FoodKindRender(card_list, food_kind, update_function, downgrade_function) {
-    return card_list[food_kind].map(function (row) {
-      return (<RNECard
-        title={row.title}
-        category={row.category}
-        img={row.img}
-        food_kind={food_kind}
-        update_function={update_function}
-        down_function={downgrade_function}
-      ></RNECard>)
-    })
   }
 
 
-
+  
   function AllFoodRender() {
+    function FoodKindRender(card_list, food_kind, update_function, downgrade_function) {
+      return card_list[food_kind].map(function (row) {
+        return (<RNECard
+          title={row.title}
+          category={row.category}
+          img={row.img}
+          food_kind={food_kind}
+          update_function={update_function}
+          down_function={downgrade_function}
+        ></RNECard>)
+      })
+    }
     return Object.keys({ ...food_list }).map(function (key) {
       return (
         <>
@@ -107,6 +91,12 @@ function FoodListRender() {
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
         <RNEButton update_function={fetch_food_list} />
+        <RNEButton update_function={function(){
+          fetch('http://192.168.0.19/')
+            .then((response) => response.json())
+            //.then((response) => alert(response["food_kind"]))
+            .then((responseJson) => add_new_food(responseJson["food_kind"], responseJson["title"]))
+        }} />
       </ScrollView>
       <AddFoodScreen add_function={add_new_food} />
     </>
