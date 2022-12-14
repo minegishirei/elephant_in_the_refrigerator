@@ -10,11 +10,12 @@ import { AddFoodScreen } from '../components/AddFoodScreen';
 import { RNEButton } from '../components/rne';
 
 function FoodListRender() {
+  const SERVER_ADRESS = "34.125.84.235"
   const food_list_init = {}
   const [food_list, SetFood_list] = useState(food_list_init)
 
   function fetch_food_list() {
-    return fetch('http://192.168.0.19/refrigerator/get')
+    return fetch(`http://${SERVER_ADRESS}/refrigerator/get`)
       .then((response) => response.json())
       .then(function (responseJson) {
         SetFood_list(responseJson)
@@ -22,7 +23,7 @@ function FoodListRender() {
   }
 
   function push_food_change(food_kind, food_title, amount) {
-    return fetch(`http://192.168.0.19/refrigerator/set?title=${food_title}&food_kind=${food_kind}&food_count=${amount}`)
+    return fetch(`http://${SERVER_ADRESS}/refrigerator/set?title=${food_title}&food_kind=${food_kind}&food_count=${amount}`)
       .then((response) => response.json())
       .then(function (responseJson) { })
   }
